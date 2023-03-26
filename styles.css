@@ -90,10 +90,14 @@ main {
 }
 
 .write {
+  text-align: end;
   font-weight: bold;
-  font-size: 1.8rem;
-  margin-left: auto;
+  font-size: 1.5rem;
+
+  width: 18rem;
+  max-height: 5rem;
   margin-right: 10%;
+  margin-left: auto;
 }
 
 .write::after {

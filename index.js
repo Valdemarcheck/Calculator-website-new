@@ -18,3 +18,21 @@ clearOneBtn.addEventListener("click", () => {
   }
 });
 clearAllBtn.addEventListener("click", () => (screenWrite.textContent = ""));
+
+numberBtns.forEach((btn) =>
+  btn.addEventListener("click", (e) => appendCharacter(e))
+);
+basicOperationBtns.forEach((btn) =>
+  btn.addEventListener("click", (e) => appendCharacter(e))
+);
+
+function appendCharacter(e) {
+  if (e.target.nodeName === "DIV") {
+    let buttonSpan = e.target.querySelector("span");
+    let character = buttonSpan.textContent;
+    screenWrite.textContent += character;
+  } else {
+    let character = e.target.textContent;
+    screenWrite.textContent += character;
+  }
+}
