@@ -34,13 +34,6 @@ h1 {
   transition: transform cubic-bezier(0.36, 1.21, 0.93, 1.32) 0.1s;
 }
 
-.write {
-  font-weight: bold;
-  font-size: 1.8rem;
-  margin-left: auto;
-  margin-right: 10%;
-}
-
 main {
   flex: 1;
   max-width: 1000px;
@@ -94,6 +87,24 @@ main {
   height: 20%;
   display: flex;
   align-items: center;
+}
+
+.write {
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-left: auto;
+  margin-right: 10%;
+}
+
+.write::after {
+  background-color: #3c3744;
+  content: '.';
+  margin-left: 3px;
+  border-radius: 2px;
+
+  animation-name: blink;
+  animation-iteration-count: infinite;
+  animation-duration: 1s;
 }
 
 .buttons {
@@ -192,6 +203,32 @@ a:active {
 .button:active {
   transform: translate(3px, 3px);
   box-shadow: none;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    26% {
+        opacity: 0;
+    }
+
+    74% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 /* Media queries */
