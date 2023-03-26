@@ -83,3 +83,18 @@ img {
   max-width: 4rem;
   height: auto;
 }
+
+@media (max-width: 500px) {
+  .container {
+    flex-direction: column-reverse;
+  }
+
+  .calculator {
+    min-height: 400px;
+  }
+
+  .extras {
+    min-height: 5rem;
+    width: 100%
+  }
+}
