@@ -44,6 +44,15 @@ footer {
   align-items: center;
 }
 
+a {
+    height: 100%;
+    aspect-ratio: 1/1;
+    background-color: #3c3744;
+    border-radius: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 a img {
   height: 4rem;
