@@ -30,11 +30,36 @@ body > * {
 }
 
 main {
-  background-color: red;
   flex: 1;
+  background-color: red;
   max-width: 1000px;
   min-width: 300px;
   max-height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.container {
+  min-width: 300px;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.calculator {
+  background-color: #f3ffb9;
+  min-width: 300px;
+  height: 100%;
+}
+
+.extras {
+  background-color: #3c3744;
+  min-width: 6rem;
+  min-height: 400px;
 }
 
 footer {
@@ -45,16 +70,16 @@ footer {
 }
 
 a {
-    height: 100%;
-    aspect-ratio: 1/1;
-    background-color: #3c3744;
-    border-radius: 30%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  aspect-ratio: 1/1;
+  background-color: #3c3744;
+  border-radius: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 img {
-    max-width: 4rem;
-    height: auto;
+  max-width: 4rem;
+  height: auto;
 }
