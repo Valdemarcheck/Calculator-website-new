@@ -51,9 +51,29 @@ main {
 }
 
 .calculator {
-  background-color: #f3ffb9;
+  border-radius: 20px;
+}
+.calculator > * {
+  border-radius: 17px;
+}
+
+.calculator {
+  background-color: #bed558;
+  border: 2px solid #3c3744;
+  box-shadow: 8px 4px #3c3744;
   min-width: 300px;
   height: 100%;
+}
+
+.screen {
+  background-color: #bed558;
+  height: 20%;
+}
+
+.buttons {
+  background-color: #f3ffb9;
+  border: 2px solid #3c3744;
+  height: 80%;
 }
 
 .extras {
@@ -95,6 +115,6 @@ img {
 
   .extras {
     min-height: 5rem;
-    width: 100%
+    width: 100%;
   }
 }
