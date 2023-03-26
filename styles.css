@@ -68,14 +68,19 @@ main {
 
 .calculator {
   background-color: #bed558;
-  min-width: 300px;
+  min-width: 260px;
   height: 100%;
 }
 
 .extras {
   background-color: #f3ffb9;
   min-width: 6rem;
-  min-height: 6rem;
+  padding: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
 }
 
 .calculator > * {
@@ -89,10 +94,50 @@ main {
   align-items: center;
 }
 
+.buttons .button {
+  flex: 1;
+}
+
+.extras .button {
+  flex: 0;
+  aspect-ratio: 1/1;
+}
+
 .buttons {
   background-color: #f3ffb9;
   border: 2px solid #3c3744;
   height: 80%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.button-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.button {
+  min-height: 4rem;
+  background-color: #bed558;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-text {
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.button.equals {
+  flex: 2;
 }
 
 footer {
@@ -118,8 +163,13 @@ img {
 }
 
 @media (max-width: 500px) {
+  main {
+    max-height: 550px;
+  }
+
   .container {
     flex-direction: column-reverse;
+    align-items: center;
   }
 
   .calculator {
@@ -129,5 +179,6 @@ img {
   .extras {
     min-height: 5rem;
     width: 100%;
+    flex-direction: row;
   }
 }
