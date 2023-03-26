@@ -1,3 +1,5 @@
+/* ADD BOLD POPPINS FONT */
+
 * {
   box-sizing: border-box;
   padding: 0;
@@ -12,6 +14,13 @@ h1 {
   font-size: 4rem;
   min-height: 4rem;
   text-align: center;
+}
+
+.write {
+    font-weight: bold;
+    font-size: 1.8rem;
+    margin-left: auto;
+    margin-right: 10%;
 }
 
 body {
@@ -68,6 +77,8 @@ main {
 .screen {
   background-color: #bed558;
   height: 20%;
+  display: flex;
+  align-items: center;
 }
 
 .buttons {
