@@ -94,15 +94,6 @@ main {
   align-items: center;
 }
 
-.buttons .button {
-  flex: 1;
-}
-
-.extras .button {
-  flex: 0;
-  aspect-ratio: 1/1;
-}
-
 .buttons {
   background-color: #f3ffb9;
   border: 2px solid #3c3744;
@@ -122,9 +113,20 @@ main {
   gap: 1rem;
 }
 
+.buttons .button {
+  flex: 1;
+}
+
+.extras .button {
+  flex: 0;
+  aspect-ratio: 1/1;
+}
+
 .button {
   min-height: 4rem;
   background-color: #bed558;
+  box-shadow: 3px 3px #3c3744;
+  border: 2px solid #3c3744;
   border-radius: 10px;
   display: flex;
   justify-content: center;
