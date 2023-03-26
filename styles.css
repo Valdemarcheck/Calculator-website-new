@@ -17,10 +17,10 @@ h1 {
 }
 
 .write {
-    font-weight: bold;
-    font-size: 1.8rem;
-    margin-left: auto;
-    margin-right: 10%;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-left: auto;
+  margin-right: 10%;
 }
 
 body {
@@ -40,7 +40,7 @@ body > * {
 
 main {
   flex: 1;
-  background-color: red;
+  background-color: grey;
   max-width: 1000px;
   min-width: 300px;
   max-height: 500px;
@@ -59,19 +59,27 @@ main {
   gap: 2rem;
 }
 
-.calculator {
+.calculator,
+.extras {
   border-radius: 20px;
-}
-.calculator > * {
-  border-radius: 17px;
+  box-shadow: 8px 4px #3c3744;
+  border: 2px solid #3c3744;
 }
 
 .calculator {
   background-color: #bed558;
-  border: 2px solid #3c3744;
-  box-shadow: 8px 4px #3c3744;
   min-width: 300px;
   height: 100%;
+}
+
+.extras {
+  background-color: #f3ffb9;
+  min-width: 6rem;
+  min-height: 6rem;
+}
+
+.calculator > * {
+  border-radius: 17px;
 }
 
 .screen {
@@ -85,12 +93,6 @@ main {
   background-color: #f3ffb9;
   border: 2px solid #3c3744;
   height: 80%;
-}
-
-.extras {
-  background-color: #3c3744;
-  min-width: 6rem;
-  min-height: 400px;
 }
 
 footer {
