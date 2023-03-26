@@ -11,3 +11,10 @@ const IN_FUNCTION = "in_function";
 
 let mode = BASIC;
 
+clearOneBtn.addEventListener("click", () => {
+  if (screenWrite.textContent.length > 0) {
+    let secondLastIndex = screenWrite.textContent.length - 1;
+    screenWrite.textContent = screenWrite.textContent.slice(0, secondLastIndex);
+  }
+});
+clearAllBtn.addEventListener("click", () => (screenWrite.textContent = ""));
