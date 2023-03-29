@@ -50,3 +50,7 @@ function isLastCharacterMathOperand() {
   let lastCharIndex = write.textContent.length - 1;
   return MATH_OPERANDS.includes(write.textContent[lastCharIndex]);
 }
+
+function isLastCharacterDot() {
+  return write.textContent[write.length - 1] === ".";
+}
