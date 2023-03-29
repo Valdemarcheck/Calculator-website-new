@@ -5,6 +5,7 @@ const equalsBtn = document.querySelector(".button.equals");
 const clearAllBtn = document.querySelector(".button.clear-all");
 const clearOneBtn = document.querySelector(".button.clear-one");
 const write = document.querySelector(".write");
+const MAX_SIGNS = 40;
 
 const MATH_OPERANDS = Array.from(basicOperationBtns).map((btn) => {
   let span = btn.querySelector("span");
@@ -32,6 +33,7 @@ basicOperationBtns.forEach((btn) =>
 );
 
 function appendCharacter(e) {
+  if (isStringTooLong()) return;
   if (e.target.nodeName === "DIV") {
     let buttonSpan = e.target.querySelector("span");
     let character = buttonSpan.textContent;
@@ -53,4 +55,8 @@ function isLastCharacterMathOperand() {
 
 function isLastCharacterDot() {
   return write.textContent[write.length - 1] === ".";
+}
+
+function isStringTooLong() {
+  return write.textContent.length >= MAX_SIGNS;
 }
