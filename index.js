@@ -51,6 +51,7 @@ function evaluateExpression() {
     let numbers = expression.split(sign).map((number) => {
       return trimExtraZeros(number);
     });
+    console.log(numbers);
 
     let result = operate(numbers[0], numbers[1], sign, isNegative);
     return result !== null ? result : expression;
@@ -138,12 +139,6 @@ function trimFirstSign(expression) {
 }
 
 function isStringValid() {
-  console.log(
-    !isStringEmpty() &&
-      !isLastCharacterMathOperand() &&
-      containsMathOperands() &&
-      !isLastCharacterDot()
-  );
   return (
     !isStringEmpty() &&
     !isLastCharacterMathOperand() &&
@@ -197,7 +192,7 @@ function operate(a, b, sign, isNegative) {
       result = a ** b;
       break;
     case "√":
-      if (a >= 0) {
+      if (a >= 2 && parseInt(a) === a) {
         result = b ** (1 / a);
       } else {
         return null;
