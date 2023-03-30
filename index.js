@@ -30,16 +30,58 @@ basicOperationBtns.forEach((btn) =>
   btn.addEventListener("click", (e) => appendCharacter(e))
 );
 
-function appendCharacter(e) {
-  let character;
+equalsBtn.addEventListener("click", () => {
+  if (isStringValid()) {
+    write.textContent = evaluateExpression();
+  }
+});
 
+function evaluateExpression() {
+  let expression = write.textContent;
+  let isNegative = false;
+
+  if (isFirstNumberNegative()) {
+    expression = trimMinusSign(expression);
+    isNegative = true;
+  }
+
+  let sign = getSign(expression);
+
+  if (sign) {
+    let numbers = expression.split(sign).map((number) => {
+      return trimExtraZeros(number);
+    });
+
+    let result = operate(numbers[0], numbers[1], sign, isNegative);
+    return result !== null ? result : expression;
+  }
+}
+
+function getSign(expression) {
+  if (isFirstNumberNegative()) {
+    expression = trimFirstSign(expression);
+  }
+  for (let sign of MATH_OPERANDS) {
+    if (expression.includes(sign)) {
+      return sign;
+    }
+  }
+  return null;
+}
+
+function appendCharacter(e) {
   if (isStringTooLong()) return;
-  character = getButtonCharacter(e);
+
+  let character = getButtonCharacter(e);
+
+  if (isStringValid() && isCharacterAnOperand(character)) {
+    write.textContent = evaluateExpression();
+  }
 
   let shouldReplaceLastCharacter =
-    MATH_OPERANDS.includes(character) &&
-    isLastCharacterMathOperand() &&
-    !containsMathOperands();
+    isCharacterAnOperand(character) && isLastCharacterMathOperand();
+
+  if (isCharacterAnOperand(character) && isStringEmpty()) return;
 
   if (shouldReplaceLastCharacter) {
     let writeText = write.textContent;
@@ -59,8 +101,63 @@ function getButtonCharacter(e) {
   }
 }
 
+function trimExtraZeros(number) {
+  let numberString = number.toString();
+  let dotIndex = includesDot(numberString) ? numberString.indexOf(".") : null;
+
+  numberString = trimZerosOnOneSide(numberString);
+
+  if (dotIndex) {
+    let reversedString = reverseStr(numberString);
+    reversedString = trimZerosOnOneSide(reversedString);
+    return +reverseStr(reversedString);
+  } else {
+    return +numberString;
+  }
+}
+
+function trimZerosOnOneSide(string) {
+  for (let char of string) {
+    if (char !== "0") break;
+    string = trimFirstSign(string);
+  }
+
+  if (string[0] === ".") {
+    string = trimFirstSign(string);
+  }
+
+  return string;
+}
+
+function reverseStr(string) {
+  return Array.from(string).reverse().join();
+}
+
+function trimFirstSign(expression) {
+  return expression.slice(1);
+}
+
+function isStringValid() {
+  console.log(
+    !isStringEmpty() &&
+      !isLastCharacterMathOperand() &&
+      containsMathOperands() &&
+      !isLastCharacterDot()
+  );
+  return (
+    !isStringEmpty() &&
+    !isLastCharacterMathOperand() &&
+    containsMathOperands() &&
+    !isLastCharacterDot()
+  );
+}
+
 function isStringEmpty() {
   return write.textContent === "";
+}
+
+function isFirstNumberNegative() {
+  return write.textContent[0] === "-";
 }
 
 function isLastCharacterMathOperand() {
@@ -69,33 +166,52 @@ function isLastCharacterMathOperand() {
 }
 
 function containsMathOperands() {
-  return write.textContent.includes(MATH_OPERANDS);
+  return getSign(write.textContent) ? true : false;
 }
 
 function isLastCharacterDot() {
   return write.textContent[write.length - 1] === ".";
 }
 
+function includesDot(string) {
+  return string.includes(".");
+}
+
+function isCharacterAnOperand(char) {
+  return MATH_OPERANDS.includes(char);
+}
+
 function isStringTooLong() {
   return write.textContent.length >= MAX_SIGNS;
 }
 
-function operate(a, b, sign) {
+function operate(a, b, sign, isNegative) {
   let result;
+
   a = +a;
   b = +b;
+  if (isNegative) a *= -1;
+
   switch (sign) {
     case "^":
       result = a ** b;
       break;
     case "√":
-      result = b ** (1 / a);
+      if (a >= 0) {
+        result = b ** (1 / a);
+      } else {
+        return null;
+      }
       break;
     case "*":
       result = a * b;
       break;
     case "/":
-      result = a / b;
+      if (b !== 0) {
+        result = a / b;
+      } else {
+        return null;
+      }
       break;
     case "+":
       result = a + b;
@@ -104,5 +220,5 @@ function operate(a, b, sign) {
       result = a - b;
       break;
   }
-  return Math.round(result);
+  return result;
 }
