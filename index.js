@@ -7,7 +7,7 @@ const clearOneBtn = document.querySelector(".button.clear-one");
 const write = document.querySelector(".write");
 const MAX_SIGNS = 40;
 
-const MATH_OPERANDS = ["^", "", "*", "/", "-", "+"];
+const MATH_OPERANDS = ["^", "√", "*", "/", "-", "+"];
 let proximity = 5;
 
 const BASIC = "basic";
@@ -31,14 +31,31 @@ basicOperationBtns.forEach((btn) =>
 );
 
 function appendCharacter(e) {
+  let character;
+
   if (isStringTooLong()) return;
+  character = getButtonCharacter(e);
+
+  let shouldReplaceLastCharacter =
+    MATH_OPERANDS.includes(character) &&
+    isLastCharacterMathOperand() &&
+    !containsMathOperands();
+
+  if (shouldReplaceLastCharacter) {
+    let writeText = write.textContent;
+    write.textContent = writeText.slice(0, writeText.length - 1) + character;
+    return;
+  } else {
+    write.textContent += character;
+  }
+}
+
+function getButtonCharacter(e) {
   if (e.target.nodeName === "DIV") {
     let buttonSpan = e.target.querySelector("span");
-    let character = buttonSpan.textContent;
-    write.textContent += character;
+    return buttonSpan.textContent;
   } else {
-    let character = e.target.textContent;
-    write.textContent += character;
+    return e.target.textContent;
   }
 }
 
@@ -49,6 +66,10 @@ function isStringEmpty() {
 function isLastCharacterMathOperand() {
   let lastCharIndex = write.textContent.length - 1;
   return MATH_OPERANDS.includes(write.textContent[lastCharIndex]);
+}
+
+function containsMathOperands() {
+  return write.textContent.includes(MATH_OPERANDS);
 }
 
 function isLastCharacterDot() {
