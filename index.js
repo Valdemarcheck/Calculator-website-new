@@ -34,6 +34,9 @@ equalsBtn.addEventListener("click", () => {
   if (isStringValid()) {
     write.textContent = evaluateExpression();
   }
+  if (isStringInfinity()) {
+    write.textContent = "∞";
+  }
 });
 
 function evaluateExpression() {
@@ -58,20 +61,9 @@ function evaluateExpression() {
   }
 }
 
-function getSign(expression) {
-  if (isFirstNumberNegative()) {
-    expression = trimFirstSign(expression);
-  }
-  for (let sign of MATH_OPERANDS) {
-    if (expression.includes(sign)) {
-      return sign;
-    }
-  }
-  return null;
-}
-
 function appendCharacter(e) {
   if (isStringTooLong()) return;
+  if (isStringInfinity()) write.textContent = "";
 
   let character = getButtonCharacter(e);
 
@@ -91,6 +83,18 @@ function appendCharacter(e) {
   } else {
     write.textContent += character;
   }
+}
+
+function getSign(expression) {
+  if (isFirstNumberNegative()) {
+    expression = trimFirstSign(expression);
+  }
+  for (let sign of MATH_OPERANDS) {
+    if (expression.includes(sign)) {
+      return sign;
+    }
+  }
+  return null;
 }
 
 function getButtonCharacter(e) {
@@ -145,6 +149,10 @@ function isStringValid() {
     containsMathOperands() &&
     !isLastCharacterDot()
   );
+}
+
+function isStringInfinity() {
+  return write.textContent.includes("Infinity") || write.textContent == "∞";
 }
 
 function isStringEmpty() {
