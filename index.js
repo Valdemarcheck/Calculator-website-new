@@ -41,7 +41,7 @@ function evaluateExpression() {
   let isNegative = false;
 
   if (isFirstNumberNegative()) {
-    expression = trimMinusSign(expression);
+    expression = trimFirstSign(expression);
     isNegative = true;
   }
 
