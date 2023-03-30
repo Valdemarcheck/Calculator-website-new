@@ -7,10 +7,8 @@ const clearOneBtn = document.querySelector(".button.clear-one");
 const write = document.querySelector(".write");
 const MAX_SIGNS = 40;
 
-const MATH_OPERANDS = Array.from(basicOperationBtns).map((btn) => {
-  let span = btn.querySelector("span");
-  return span.textContent;
-});
+const MATH_OPERANDS = ["^", "", "*", "/", "-", "+"];
+let proximity = 5;
 
 const BASIC = "basic";
 const IN_FUNCTION = "in_function";
@@ -59,4 +57,31 @@ function isLastCharacterDot() {
 
 function isStringTooLong() {
   return write.textContent.length >= MAX_SIGNS;
+}
+
+function operate(a, b, sign) {
+  let result;
+  a = +a;
+  b = +b;
+  switch (sign) {
+    case "^":
+      result = a ** b;
+      break;
+    case "√":
+      result = b ** (1 / a);
+      break;
+    case "*":
+      result = a * b;
+      break;
+    case "/":
+      result = a / b;
+      break;
+    case "+":
+      result = a + b;
+      break;
+    case "-":
+      result = a - b;
+      break;
+  }
+  return Math.round(result);
 }
