@@ -13,7 +13,7 @@ const DOT_MODE = 1;
 const MATH_OPERANDS = ["^", "√", "*", "/", "-", "+"];
 const MAX_LENGTH = 100;
 const MAX_EXPONENT = 21;
-let proximity = 5;
+let precision = 2;
 
 const BASIC = "basic";
 const IN_FUNCTION = "in_function";
@@ -51,7 +51,7 @@ function evaluateExpression() {
   let isNegative = false;
 
   if (isFirstNumberNegative()) {
-    expression = trimFirstSign(expression);
+    expression = trimFirstCharacter(expression);
     isNegative = true;
   }
 
@@ -95,7 +95,7 @@ function appendDot() {
 
 function getSign(expression) {
   if (isFirstNumberNegative()) {
-    expression = trimFirstSign(expression);
+    expression = trimFirstCharacter(expression);
   }
   for (let sign of MATH_OPERANDS) {
     if (expression.includes(sign)) {
@@ -138,12 +138,12 @@ function trimExtraZeros(number) {
 function trimZerosOnOneSide(string, reversed) {
   for (let char of string) {
     if (char !== "0") break;
-    string = trimFirstSign(string);
+    string = trimFirstCharacter(string);
   }
 
   if (string[0] === ".") {
     if (reversed) {
-      string = trimFirstSign(string);
+      string = trimFirstCharacter(string);
     } else {
       string = "0" + string;
     }
@@ -156,7 +156,7 @@ function reverseStr(string) {
   return Array.from(string).reverse().join("");
 }
 
-function trimFirstSign(expression) {
+function trimFirstCharacter(expression) {
   return expression.slice(1);
 }
 
@@ -215,7 +215,7 @@ function isLastCharacterDot() {
 }
 
 function includesDot(string) {
-  return string.includes(".");
+  return string.toString().includes(".");
 }
 
 function isCharacterAnOperand(char) {
@@ -265,12 +265,11 @@ function operate(a, b, sign, isNegative) {
       result = a - b;
       break;
   }
-  return result.toString().includes("e")
-    ? fromScientificToBasic(result)
-    : result;
+  return fromScientificToBasic(basicRoundNumber(result));
 }
 
 function fromScientificToBasic(number) {
+  if (!number.toString().includes("e")) return number;
   let numberAndExponent = number.toString().split("e");
   let exponent = numberAndExponent[1];
   if (+exponent.slice(1) >= MAX_EXPONENT) {
@@ -278,4 +277,25 @@ function fromScientificToBasic(number) {
   } else {
     return BigInt(numberAndExponent[0]);
   }
+}
+
+function basicRoundNumber(number) {
+  if (includesDot(number)) {
+    let roundedDigit = "";
+
+    let numberParts = number.toString().split(".");
+    let wholePart = numberParts[0];
+    let decimalPart = numberParts[1];
+    if (decimalPart.length <= precision) return number;
+
+    let numberAtPrecision = +decimalPart[precision];
+    decimalPart = decimalPart.slice(0, precision);
+
+    roundedDigit = +decimalPart[decimalPart.length - 1];
+    if (+numberAtPrecision >= 5) roundedDigit++;
+
+    decimalPart = decimalPart.slice(0, precision - 1) + roundedDigit;
+    number = parseFloat(wholePart + "." + decimalPart);
+  }
+  return number;
 }
