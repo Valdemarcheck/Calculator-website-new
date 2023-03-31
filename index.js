@@ -54,7 +54,6 @@ function evaluateExpression() {
     let numbers = expression.split(sign).map((number) => {
       return trimExtraZeros(number);
     });
-    console.log(numbers);
 
     let result = operate(numbers[0], numbers[1], sign, isNegative);
     return result !== null ? result : expression;
@@ -110,32 +109,36 @@ function trimExtraZeros(number) {
   let numberString = number.toString();
   let dotIndex = includesDot(numberString) ? numberString.indexOf(".") : null;
 
-  numberString = trimZerosOnOneSide(numberString);
+  numberString = trimZerosOnOneSide(numberString, false);
 
   if (dotIndex) {
     let reversedString = reverseStr(numberString);
-    reversedString = trimZerosOnOneSide(reversedString);
+    reversedString = trimZerosOnOneSide(reversedString, true);
     return +reverseStr(reversedString);
   } else {
     return +numberString;
   }
 }
 
-function trimZerosOnOneSide(string) {
+function trimZerosOnOneSide(string, reversed) {
   for (let char of string) {
     if (char !== "0") break;
     string = trimFirstSign(string);
   }
 
   if (string[0] === ".") {
-    string = trimFirstSign(string);
+    if (reversed) {
+      string = trimFirstSign(string);
+    } else {
+      string = "0" + string;
+    }
   }
 
   return string;
 }
 
 function reverseStr(string) {
-  return Array.from(string).reverse().join();
+  return Array.from(string).reverse().join("");
 }
 
 function trimFirstSign(expression) {
