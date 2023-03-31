@@ -5,9 +5,10 @@ const equalsBtn = document.querySelector(".button.equals");
 const clearAllBtn = document.querySelector(".button.clear-all");
 const clearOneBtn = document.querySelector(".button.clear-one");
 const write = document.querySelector(".write");
-const MAX_SIGNS = 40;
+const MAX_SIGNS = 110;
 
 const MATH_OPERANDS = ["^", "√", "*", "/", "-", "+"];
+const MAX_LENGTH = 100;
 let proximity = 5;
 
 const BASIC = "basic";
@@ -56,6 +57,7 @@ function evaluateExpression() {
     });
 
     let result = operate(numbers[0], numbers[1], sign, isNegative);
+    if (isNumberTooLong(result)) result = "∞";
     return result !== null ? result : expression;
   }
 }
@@ -191,6 +193,10 @@ function isStringTooLong() {
   return write.textContent.length >= MAX_SIGNS;
 }
 
+function isNumberTooLong(number) {
+  return number.toString().length > MAX_LENGTH;
+}
+
 function operate(a, b, sign, isNegative) {
   let result;
 
@@ -226,5 +232,17 @@ function operate(a, b, sign, isNegative) {
       result = a - b;
       break;
   }
-  return result;
+  return result.toString().includes("e")
+    ? fromScientificToBasic(result)
+    : result;
+}
+
+function fromScientificToBasic(number) {
+  let numberAndExponent = number.toString().split("e");
+  let exponent = numberAndExponent[1];
+  if (exponent[0] === "-") {
+    return "∞";
+  } else {
+    return BigInt64Array(numberAndExponent[0]);
+  }
 }
