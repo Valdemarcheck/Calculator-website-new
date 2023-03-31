@@ -5,7 +5,7 @@ const equalsBtn = document.querySelector(".button.equals");
 const clearAllBtn = document.querySelector(".button.clear-all");
 const clearOneBtn = document.querySelector(".button.clear-one");
 const write = document.querySelector(".write");
-const MAX_SIGNS = 110;
+const MAX_SIGNS = 100;
 
 const MATH_OPERANDS = ["^", "√", "*", "/", "-", "+"];
 const MAX_LENGTH = 100;
