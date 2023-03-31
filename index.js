@@ -13,7 +13,7 @@ const DOT_MODE = 1;
 const MATH_OPERANDS = ["^", "√", "*", "/", "-", "+"];
 const MAX_LENGTH = 100;
 const MAX_EXPONENT = 21;
-let precision = 2;
+let precision = 3;
 
 const BASIC = "basic";
 const IN_FUNCTION = "in_function";
@@ -98,7 +98,7 @@ function getSign(expression) {
     expression = trimFirstCharacter(expression);
   }
   for (let sign of MATH_OPERANDS) {
-    if (expression.includes(sign)) {
+    if (includesString(expression, sign)) {
       return sign;
     }
   }
@@ -122,7 +122,9 @@ function getButtonCharacter(e) {
 
 function trimExtraZeros(number) {
   let numberString = number.toString();
-  let dotIndex = includesDot(numberString) ? numberString.indexOf(".") : null;
+  let dotIndex = includesString(numberString, ".")
+    ? numberString.indexOf(".")
+    : null;
 
   numberString = trimZerosOnOneSide(numberString, false);
 
@@ -180,9 +182,9 @@ function isStringValid(mode) {
       let sign = getSign(expression);
       if (sign) {
         let secondNumber = getNumbers(expression, sign)[1].toString();
-        if (!includesDot(secondNumber)) return true;
+        if (!includesString(secondNumber, ".")) return true;
       } else {
-        if (!includesDot(expression)) return true;
+        if (!includesString(expression, ".")) return true;
       }
     }
     return false;
@@ -190,7 +192,9 @@ function isStringValid(mode) {
 }
 
 function isStringInfinity() {
-  return write.textContent.includes("Infinity") || write.textContent == "∞";
+  return (
+    includesString(write.textContent, "Infinity") || write.textContent == "∞"
+  );
 }
 
 function isStringEmpty() {
@@ -214,8 +218,8 @@ function isLastCharacterDot() {
   return write.textContent[write.length - 1] === ".";
 }
 
-function includesDot(string) {
-  return string.toString().includes(".");
+function includesString(string, stringToLookFor) {
+  return string.toString().includes(stringToLookFor);
 }
 
 function isCharacterAnOperand(char) {
@@ -280,7 +284,7 @@ function fromScientificToBasic(number) {
 }
 
 function basicRoundNumber(number) {
-  if (includesDot(number)) {
+  if (includesString(number, ".")) {
     let roundedDigit = "";
 
     let numberParts = number.toString().split(".");
