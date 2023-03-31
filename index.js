@@ -1,14 +1,18 @@
 const basicOperationBtns = document.querySelectorAll(".button.basic-operation");
 const numberBtns = document.querySelectorAll(".button.number");
-const dotBtn = document.querySelectorAll(".button.dot");
+const dotBtn = document.querySelector(".button.dot");
 const equalsBtn = document.querySelector(".button.equals");
 const clearAllBtn = document.querySelector(".button.clear-all");
 const clearOneBtn = document.querySelector(".button.clear-one");
 const write = document.querySelector(".write");
 const MAX_SIGNS = 100;
 
+const OPERAND_MODE = 0;
+const DOT_MODE = 1;
+
 const MATH_OPERANDS = ["^", "√", "*", "/", "-", "+"];
 const MAX_LENGTH = 100;
+const MAX_EXPONENT = 21;
 let proximity = 5;
 
 const BASIC = "basic";
@@ -31,8 +35,10 @@ basicOperationBtns.forEach((btn) =>
   btn.addEventListener("click", (e) => appendCharacter(e))
 );
 
+dotBtn.addEventListener("click", appendDot);
+
 equalsBtn.addEventListener("click", () => {
-  if (isStringValid()) {
+  if (isStringValid(OPERAND_MODE)) {
     write.textContent = evaluateExpression();
   }
   if (isStringInfinity()) {
@@ -52,10 +58,7 @@ function evaluateExpression() {
   let sign = getSign(expression);
 
   if (sign) {
-    let numbers = expression.split(sign).map((number) => {
-      return trimExtraZeros(number);
-    });
-
+    let numbers = getNumbers(write.textContent, sign);
     let result = operate(numbers[0], numbers[1], sign, isNegative);
     if (isNumberTooLong(result)) result = "∞";
     return result !== null ? result : expression;
@@ -68,7 +71,7 @@ function appendCharacter(e) {
 
   let character = getButtonCharacter(e);
 
-  if (isStringValid() && isCharacterAnOperand(character)) {
+  if (isStringValid(OPERAND_MODE) && isCharacterAnOperand(character)) {
     write.textContent = evaluateExpression();
   }
 
@@ -86,6 +89,10 @@ function appendCharacter(e) {
   }
 }
 
+function appendDot() {
+  if (isStringValid(DOT_MODE)) write.textContent += ".";
+}
+
 function getSign(expression) {
   if (isFirstNumberNegative()) {
     expression = trimFirstSign(expression);
@@ -96,6 +103,12 @@ function getSign(expression) {
     }
   }
   return null;
+}
+
+function getNumbers(string, sign) {
+  return string.split(sign).map((number) => {
+    return trimExtraZeros(number);
+  });
 }
 
 function getButtonCharacter(e) {
@@ -147,13 +160,33 @@ function trimFirstSign(expression) {
   return expression.slice(1);
 }
 
-function isStringValid() {
-  return (
-    !isStringEmpty() &&
-    !isLastCharacterMathOperand() &&
-    containsMathOperands() &&
-    !isLastCharacterDot()
-  );
+function isStringValid(mode) {
+  if (mode === OPERAND_MODE) {
+    let stringIsValidForOperand =
+      !isStringEmpty() &&
+      !isLastCharacterMathOperand() &&
+      containsMathOperands() &&
+      !isLastCharacterDot();
+
+    return stringIsValidForOperand;
+  } else if (mode === DOT_MODE) {
+    let stringIsValidForDot =
+      !isStringEmpty() &&
+      !isLastCharacterMathOperand() &&
+      !isLastCharacterDot();
+
+    if (stringIsValidForDot) {
+      let expression = write.textContent;
+      let sign = getSign(expression);
+      if (sign) {
+        let secondNumber = getNumbers(expression, sign)[1].toString();
+        if (!includesDot(secondNumber)) return true;
+      } else {
+        if (!includesDot(expression)) return true;
+      }
+    }
+    return false;
+  }
 }
 
 function isStringInfinity() {
@@ -240,9 +273,9 @@ function operate(a, b, sign, isNegative) {
 function fromScientificToBasic(number) {
   let numberAndExponent = number.toString().split("e");
   let exponent = numberAndExponent[1];
-  if (exponent[0] === "-") {
+  if (+exponent.slice(1) >= MAX_EXPONENT) {
     return "∞";
   } else {
-    return BigInt64Array(numberAndExponent[0]);
+    return BigInt(numberAndExponent[0]);
   }
 }
