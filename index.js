@@ -1,5 +1,9 @@
 const basicOperationBtns = document.querySelectorAll(".button.basic-operation");
 const numberBtns = document.querySelectorAll(".button.number");
+const extrasBtns = document.querySelectorAll(
+  ".extras .button[data-button-attach]"
+);
+const exitButtons = document.querySelectorAll(".button.exit");
 const dotBtn = document.querySelector(".button.dot");
 const equalsBtn = document.querySelector(".button.equals");
 const clearAllBtn = document.querySelector(".button.clear-all");
@@ -19,6 +23,18 @@ const BASIC = "basic";
 const IN_FUNCTION = "in_function";
 
 let mode = BASIC;
+
+extrasBtns.forEach((button) => {
+  let panelType = button.getAttribute("data-button-attach");
+  let panel = document.querySelector(generatePanelQuery(panelType));
+  if (panel) {
+    button.addEventListener("click", () => showPanel(panel));
+  }
+});
+
+exitButtons.forEach((button) => {
+  button.addEventListener("click", (e) => hidePanel(e));
+});
 
 clearOneBtn.addEventListener("click", () => {
   if (write.textContent.length > 0) {
@@ -45,6 +61,21 @@ equalsBtn.addEventListener("click", () => {
     write.textContent = "∞";
   }
 });
+
+function generatePanelQuery(type) {
+  return `.black[data-button-attach=${type}]`;
+}
+
+function hidePanel(e) {
+  let panel = e.target.closest(".black");
+  console.log(panel);
+  panel.style.display = "none";
+}
+
+function showPanel(panel) {
+  console.log(panel);
+  panel.style.display = "flex";
+}
 
 function evaluateExpression() {
   let expression = write.textContent;
