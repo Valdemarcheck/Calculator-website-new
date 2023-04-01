@@ -1,3 +1,5 @@
+// Constants and global variables
+
 const basicOperationBtns = document.querySelectorAll(".button.basic-operation");
 const numberBtns = document.querySelectorAll(".button.number");
 const extrasBtns = document.querySelectorAll(
@@ -13,8 +15,10 @@ const MAX_SIGNS = 100;
 
 const OPERAND_MODE = 0;
 const DOT_MODE = 1;
+const FUNCTION_MODE = 2;
 
 const MATH_OPERANDS = ["^", "√", "*", "/", "-", "+"];
+const MATH_CONSTANTS = { 𝜋: 3.14159, 𝑒: 2.71828, 𝜏: 6.28319, 𝜙: 1.61803 };
 const MAX_LENGTH = 100;
 const MAX_EXPONENT = 21;
 let precision = 3;
@@ -23,6 +27,120 @@ let precision = 3;
 // const IN_FUNCTION = "in_function";
 
 // let mode = BASIC;
+
+// Extras panel attachments and functions
+
+const functionBtns = document.querySelectorAll(".function");
+functionBtns.forEach((button) => {
+  button.addEventListener("click", (e) => evaluateFunction(e));
+});
+
+function evaluateFunction(e) {
+  if (isStringValid(FUNCTION_MODE)) {
+    let functionName = getButtonSpanText(e);
+    let number = +write.textContent;
+    let result = operateFunction(number, functionName);
+    write.textContent = result;
+  }
+}
+
+function operateFunction(number, functionName) {
+  let result;
+
+  switch (functionName) {
+    case "sin":
+      result = Math.sin(number);
+      break;
+    case "cos":
+      result = Math.cos(number);
+      break;
+    case "tan":
+      result = Math.tan(number);
+      break;
+    case "cot":
+      result = 1 / Math.tan(number);
+      break;
+    case "sec":
+      result = 1 / Math.cos(number);
+      break;
+    case "csc":
+      result = 1 / Math.sin(number);
+      break;
+    case "asin":
+      result = Math.asin(number);
+      break;
+    case "acos":
+      result = Math.acos(number);
+      break;
+    case "atan":
+      result = Math.atan(number);
+      break;
+    case "acot":
+      result = Math.PI / 2 - Math.atan(number);
+      break;
+    case "asec":
+      result = Math.acos(1 / number);
+      break;
+    case "acsc":
+      result = Math.asin(1 / number);
+      break;
+    case "sihn":
+      result = Math.sinh(number);
+      break;
+    case "cosh":
+      result = Math.cosh(number);
+      break;
+    case "tahn":
+      result = Math.tanh(number);
+      break;
+    case "coth":
+      result = 1 / Math.tanh(number);
+      break;
+    case "sech":
+      result = 1 / Math.cosh(number);
+      break;
+    case "csch":
+      result = 1 / Math.sinh(number);
+      break;
+    case "asihn":
+      result = Math.asinh(number);
+      break;
+    case "acosh":
+      result = Math.acosh(number);
+      break;
+    case "atahn":
+      result = Math.atanh(number);
+      break;
+    case "acoth":
+      result = acoth(number);
+      break;
+    case "asech":
+      result = asech(number);
+      break;
+    case "acsch":
+      result = acsch(number);
+      break;
+    default:
+      console.log("no such function");
+      result = 0;
+  }
+
+  return fromScientificToBasic(basicRoundNumber(result));
+}
+
+function acoth(number) {
+  return 0.5 * Math.log((number + 1)(number - 1));
+}
+
+function asech(number) {
+  return Math.log(1 / number + (1 / number ** 2 - 1) ** 0.5);
+}
+
+function acsch(number) {
+  return Math.log(1 / number + (1 / number ** 2 + 1) ** 0.5);
+}
+
+// General purpose attachments
 
 extrasBtns.forEach((button) => {
   let panelType = button.getAttribute("data-button-attach");
@@ -47,6 +165,7 @@ clearAllBtn.addEventListener("click", () => (write.textContent = ""));
 numberBtns.forEach((btn) =>
   btn.addEventListener("click", (e) => appendCharacter(e))
 );
+
 basicOperationBtns.forEach((btn) =>
   btn.addEventListener("click", (e) => appendCharacter(e))
 );
@@ -54,13 +173,16 @@ basicOperationBtns.forEach((btn) =>
 dotBtn.addEventListener("click", appendDot);
 
 equalsBtn.addEventListener("click", () => {
+  if (isStringInfinity()) {
+    write.textContent = "∞";
+    return;
+  }
   if (isStringValid(OPERAND_MODE)) {
     write.textContent = evaluateExpression();
   }
-  if (isStringInfinity()) {
-    write.textContent = "∞";
-  }
 });
+
+// General purpose functions
 
 function generatePanelQuery(type) {
   return `.black[data-button-attach=${type}]`;
@@ -88,7 +210,7 @@ function evaluateExpression() {
 
   if (sign) {
     let numbers = getNumbers(write.textContent, sign);
-    let result = operate(numbers[0], numbers[1], sign, isNegative);
+    let result = operateExpression(numbers[0], numbers[1], sign, isNegative);
     if (isNumberTooLong(result)) result = "∞";
     return result !== null ? result : expression;
   }
@@ -98,7 +220,7 @@ function appendCharacter(e) {
   if (isStringTooLong()) return;
   if (isStringInfinity()) write.textContent = "";
 
-  let character = getButtonCharacter(e);
+  let character = getButtonSpanText(e);
 
   if (isStringValid(OPERAND_MODE) && isCharacterAnOperand(character)) {
     write.textContent = evaluateExpression();
@@ -140,7 +262,7 @@ function getNumbers(string, sign) {
   });
 }
 
-function getButtonCharacter(e) {
+function getButtonSpanText(e) {
   if (e.target.nodeName === "DIV") {
     let buttonSpan = e.target.querySelector("span");
     return buttonSpan.textContent;
@@ -193,20 +315,20 @@ function trimFirstCharacter(expression) {
 
 function isStringValid(mode) {
   if (mode === OPERAND_MODE) {
-    let stringIsValidForOperand =
+    let stringIsValid =
       !isStringEmpty() &&
       !isLastCharacterMathOperand() &&
       containsMathOperands() &&
       !isLastCharacterDot();
 
-    return stringIsValidForOperand;
+    return stringIsValid;
   } else if (mode === DOT_MODE) {
-    let stringIsValidForDot =
+    let stringIsValid =
       !isStringEmpty() &&
       !isLastCharacterMathOperand() &&
       !isLastCharacterDot();
 
-    if (stringIsValidForDot) {
+    if (stringIsValid) {
       let expression = write.textContent;
       let sign = getSign(expression);
       if (sign) {
@@ -217,6 +339,14 @@ function isStringValid(mode) {
       }
     }
     return false;
+  } else if (mode === FUNCTION_MODE) {
+    let stringIsValid =
+      !isStringEmpty() &&
+      !isLastCharacterMathOperand() &&
+      !containsMathOperands() &&
+      !isLastCharacterDot();
+
+    return stringIsValid;
   }
 }
 
@@ -263,7 +393,7 @@ function isNumberTooLong(number) {
   return number.toString().length > MAX_LENGTH;
 }
 
-function operate(a, b, sign, isNegative) {
+function operateExpression(a, b, sign, isNegative) {
   let result;
 
   a = +a;

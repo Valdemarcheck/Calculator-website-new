@@ -227,7 +227,7 @@ img {
 
 .inner-buttons {
   padding: 1rem;
-  max-width: 24rem;
+  max-width: 34rem;
   background-color: #bcc58f;
   border-radius: 1rem;
 
@@ -239,12 +239,13 @@ img {
 }
 
 .row {
-  padding-left: 5%;
+  padding-left: 2.5%;
 }
 
 .exit {
   width: 4.5rem;
   border-radius: 50%;
+  box-shadow: none;
 }
 
 .exit img {
