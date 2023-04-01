@@ -252,6 +252,11 @@ img {
   height: auto;
 }
 
+.black[data-button-attach="constants"] .button span {
+  font-weight: normal;
+  font-size: 2rem;
+}
+
 /* Interactivity */
 
 h1:hover {

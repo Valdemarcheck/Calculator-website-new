@@ -19,10 +19,10 @@ const MAX_LENGTH = 100;
 const MAX_EXPONENT = 21;
 let precision = 3;
 
-const BASIC = "basic";
-const IN_FUNCTION = "in_function";
+// const BASIC = "basic";
+// const IN_FUNCTION = "in_function";
 
-let mode = BASIC;
+// let mode = BASIC;
 
 extrasBtns.forEach((button) => {
   let panelType = button.getAttribute("data-button-attach");
@@ -68,12 +68,10 @@ function generatePanelQuery(type) {
 
 function hidePanel(e) {
   let panel = e.target.closest(".black");
-  console.log(panel);
   panel.style.display = "none";
 }
 
 function showPanel(panel) {
-  console.log(panel);
   panel.style.display = "flex";
 }
 
