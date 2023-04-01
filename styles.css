@@ -93,7 +93,7 @@ main {
   display: inline-block;
   font-weight: bold;
   font-size: 1.1rem;
-  overflow-wrap:break-word;
+  overflow-wrap: break-word;
 
   max-width: 18rem;
   max-height: 5rem;
@@ -184,6 +184,69 @@ a {
 
 img {
   max-width: 4rem;
+  height: auto;
+}
+
+/* Extras layout */
+
+.black {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.inner {
+  padding: 0.5rem;
+  background-color: rgba(36, 35, 46, 0.6);
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.inner * {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.inner .button {
+  aspect-ratio: 1/1;
+  flex: 0;
+}
+
+.inner-buttons {
+  padding: 1rem;
+  max-width: 24rem;
+  background-color: #bcc58f;
+  border-radius: 1rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.row {
+  padding-left: 5%;
+}
+
+.exit {
+  width: 4.5rem;
+  border-radius: 50%;
+}
+
+.exit img {
+  width: 70%;
   height: auto;
 }
 

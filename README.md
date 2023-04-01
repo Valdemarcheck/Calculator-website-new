@@ -5,3 +5,4 @@ This is my attempt on calculator project from The Odin Project curriculum Founda
 ## Sources
 
 - <a target="_blank" href="https://icons8.com/icon/106562/github">GitHub</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+- <a target="_blank" href="https://icons8.com/icon/9433/multiply">Multiply</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
